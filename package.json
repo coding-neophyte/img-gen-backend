@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "type": "commonjs",
   "scripts": {
     "test": "jest --testEnvironment=node --runInBand __tests__",
     "start": "node server.js"
