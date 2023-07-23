@@ -1,0 +1,25 @@
+name: Jest Tests
+
+on: [push]
+jobs:
+    test:
+        name: Run Jest Tests
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout respository
+              uses: actions/setup-node@v2
+              with:
+                node-version: "20"
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run Jest Tests
+              run: npm test
+              env:
+                CI: true
+                JWT_SECRET: ${{ secrets.JWT_SECRET }}
+                COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+                SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+                MONGODB_URI: ${{ secrets.MONGODB_URI }}
