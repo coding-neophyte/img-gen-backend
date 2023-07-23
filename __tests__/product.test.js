@@ -14,7 +14,7 @@ const mockProduct = {
 };
 
 describe('Testing Product Routes', () => {
-  beforeEach(async() => {
+  beforeAll(async() => {
     await db.setUp();
   });
   afterEach(async() => {
@@ -31,5 +31,11 @@ describe('Testing Product Routes', () => {
     expect(response.body.title).toBe('dutch');
     expect(response.body.description).toBe('rolling organic');
     expect(response.body.price).toBe(3.99);
+  });
+  it('Get Products test', async () => {
+    const newProduct = await agent.post('/products/add').send(mockProduct);
+    await agent.get('/products');
+
+    expect.arrayContaining(newProduct);
   });
 });
