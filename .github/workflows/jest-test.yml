@@ -8,10 +8,8 @@ jobs:
 
         steps:
             - name: Checkout respository
-              uses: actions/setup-node@v3
-              with:
-                node-version: "20"
-
+              uses: actions/checkout@v2
+              
             - name: Install dependencies
               run: npm install
 
