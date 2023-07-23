@@ -1,7 +1,6 @@
 const Mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../lib/app');
-const db = require('../lib/Mongoose/mongoose-setup');
 
 Mongoose.set('strictQuery', true);
 
@@ -15,15 +14,17 @@ const mockProduct = {
 
 describe('Testing Product Routes', () => {
   beforeAll(async() => {
-    await db.setUp();
-  });
-  afterEach(async() => {
-    await db.dropCollections();
-  });
-  afterAll(async() => {
-    await db.dropDatabase();
+    await Mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
   });
 
+
+  afterAll(async() => {
+    await Mongoose.disconnect();
+  });
+  
   it('Insert Product Test', async () => {
     const response = await agent.post('/products/add').send(mockProduct);
 
