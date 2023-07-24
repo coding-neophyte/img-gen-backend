@@ -51,4 +51,17 @@ describe('Testing User Routes', () => {
 
     expect(res.body).toEqual({ message: 'Signed In' });
   });
+  it('Testing Logout Route', async () => {
+    const newUser = await agent.post('/auth/register').send(mockUser);
+
+    await agent.post('/auth/login').send({
+      email: newUser._body.email,
+      password: mockUser.password
+    });
+
+    const res = await agent.delete('/auth/logout');
+
+    expect(res.status).toBe(204);
+    expect(res.body).toEqual({});
+  });
 });
