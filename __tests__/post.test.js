@@ -14,7 +14,6 @@ const mockUser = {
 };
 
 const mockPost = {
-  name: 'no name',
   prompt: 'rapping dog',
   photo: 'dog rapping',
   authorId: '1'
@@ -41,5 +40,14 @@ describe('Testing Post Routes', () => {
     expect(res._body.prompt).toEqual(expect.any(String));
     expect(res._body.photo).toEqual(expect.any(String));
     expect(res._body.authorId).toEqual(expect.any(String));
+  });
+
+  it('Testing Get All Post Routes', async() => {
+    await agent.post('/auth/register').send(mockUser);
+    const res = await agent.post('/posts/add').send(mockPost);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ ...mockPost, _id: expect.any(String), authorId: expect.any(String) });
+
   });
 });
