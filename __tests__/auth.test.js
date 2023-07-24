@@ -5,6 +5,7 @@ const db = require('../lib/Mongoose/mongoose-setup');
 
 const agent = request.agent(app);
 Mongoose.set('strictQuery', true);
+require('dotenv').config();
 
 const mockUser = {
   name: 'no name',
@@ -15,7 +16,7 @@ const mockUser = {
 
 
 describe('Testing User Routes', () => {
-  beforeEach(async() => {
+  beforeAll(async() => {
     await db.setUp();
   });
 
@@ -29,7 +30,7 @@ describe('Testing User Routes', () => {
   });
 
 
-  it('Testing Sign In Router', async () => {
+  it('Testing Sign Up Route', async () => {
     const res = await agent.post('/auth/register').send(mockUser);
 
     expect(res.status).toBe(200);
@@ -37,5 +38,17 @@ describe('Testing User Routes', () => {
     expect(res.body.username).toEqual(expect.any(String));
     expect(res.body.email).toEqual(expect.any(String));
     expect(res.body.password).toEqual(expect.any(String));
+  });
+  it('Testing Sign In Route', async () => {
+    const newUser = await agent.post('/auth/register').send(mockUser);
+
+    const res = await agent.post('/auth/login').send({
+      email: newUser._body.email,
+      password: mockUser.password
+    });
+
+
+
+    expect(res.body).toEqual({ message: 'Signed In' });
   });
 });
